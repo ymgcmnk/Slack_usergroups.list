@@ -8,7 +8,6 @@ function onOpen() {
   addMenu();
 }
 
-
 /**
  * Add own menu.
 */
