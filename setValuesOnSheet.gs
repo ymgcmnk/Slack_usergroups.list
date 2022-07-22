@@ -7,7 +7,7 @@ function setValuesOnSheet() {
   const newSheet = ss.insertSheet();
   newSheet.setName(today);
 
-  const values = convertObjectToArray();
+  const values = objectToArray();
   console.log(values);
 
   newSheet.getRange(1, 1, values.length, values[0].length).setValues(values);
@@ -19,7 +19,7 @@ function setValuesOnSheet() {
  * Function to convert a multi-tier object to an array.
  * @return {array} values - List all User Groups for a team
  */
-function convertObjectToArray() {
+function objectToArray() {
 
   const response = getSlackUsergroupsList();
   // console.log(response); //ok
@@ -31,17 +31,19 @@ function convertObjectToArray() {
   const values = [];
   userGroupItems.forEach(userGroupItem => {
     const object = userGroups[userGroupItem];
-    const { name, id, description } = object;
-    const record = [name, id, description];
-    object.users.forEach(user => {
-      const userID = user;
-      const tmpRecord = [...record];
-      tmpRecord.push(userID);
-      values.push(tmpRecord);
-    });
+    const { name, id, handle, description, user_count } = object;
+    const record = [name, id, handle, description, user_count];
+    // object.users.forEach(user => {
+    //   const userID = user;
+    //   const tmpRecord = [...record];
+    //   tmpRecord.push(userID);
+    //   values.push(tmpRecord);
+      
+    // });
+    values.push(record);
   });
 
-  const headers = ["name", "id", "description", "userID"];
+  const headers = ["name", "id", "handle", "description", "user_count"];
   values.unshift(headers)
 
   console.log(values);
@@ -69,13 +71,13 @@ function getSlackUsergroupsList() {
       "token": token, //Required arguments-boolean
       "include_count": true, //Optional arguments-boolean
       "include_disabled": false, //Optional arguments-boolean
-      "include_users": true //Optional arguments-boolean
+      "include_users": false //Optional arguments-boolean
       // "team_id": "TEAMID" //Optional arguments-string
     }
   }
 
   const rawResponse = UrlFetchApp.fetch(url, options);
-  // console.log(`rawResponse: ${rawResponse}`);
+  console.log(`rawResponse: ${rawResponse}`);
   const obj = JSON.parse(rawResponse);
   // console.log(`obj: ${obj}`);
   return obj;
