@@ -31,8 +31,8 @@ function convertObjectToArray() {
   const values = [];
   userGroupItems.forEach(userGroupItem => {
     const object = userGroups[userGroupItem];
-    const { name, id, description } = object;
-    const record = [name, id, description];
+    const { name, id, handle,　description } = object;
+    const record = [name, id, handle,　description];
     object.users.forEach(user => {
       const userID = user;
       const tmpRecord = [...record];
@@ -41,7 +41,7 @@ function convertObjectToArray() {
     });
   });
 
-  const headers = ["name", "id", "description", "userID"];
+  const headers = ["name", "id", "handle","description", "userID"];
   values.unshift(headers)
 
   console.log(values);
